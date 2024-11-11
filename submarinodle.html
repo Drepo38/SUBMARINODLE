@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submarinodle</title>
+    <style>
+        /* CSS per lo stile della pagina */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-size: cover;
+            color: #ffffff;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #00c3ff;
+        }
+
+        .container {
+            max-width: 600px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7); /* Sfondo semitrasparente per migliorare la leggibilità */
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 2px solid #00c3ff;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #00c3ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #007ba7;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        /* Stile per il menu a tendina */
+        select {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 2px solid #00c3ff;
+            border-radius: 4px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submarinodle</h1>
+        <p>Indovina il nome del sottomarino scelto oggi!</p>
+        
+        <!-- Menu a tendina con l'elenco dei sottomarini possibili -->
+        <label for="submarineList">Sottomarini disponibili:</label>
+        <select id="submarineList">
+            <option value="">--Seleziona un sottomarino--</option>
+        </select>
+        
+        <input type="text" id="submarineInput" placeholder="Inserisci il nome del sottomarino">
+        <button onclick="checkSubmarine()">Verifica</button>
+        <div class="result" id="resultMessage"></div>
+    </div>
+
+    <script>
+        // Array con i link delle immagini di sfondo
+        const backgrounds = [
+            'https://e0.pxfuel.com/wallpapers/932/294/desktop-wallpaper-submarine-u-black-submarine-submarine-submarine-art.jpg', // Sostituisci con il primo link dell'immagine di sfondo
+            'https://www.giochi-da-tavolo.it/wp-content/uploads/2017/08/battaglia-navale-gdt.jpg', // Sostituisci con il secondo link dell'immagine di sfondo
+            'https://static.vecteezy.com/ti/vettori-gratis/p1/534582-simpatico-sottomarino-giallo-vettoriale.jpg'  // Sostituisci con il terzo link dell'immagine di sfondo
+        ];
+
+        // Seleziona uno sfondo casuale e applicalo al body
+        function setRandomBackground() {
+            const randomIndex = Math.floor(Math.random() * backgrounds.length);
+            document.body.style.backgroundImage = `url('${backgrounds[randomIndex]}')`;
+        }
+
+        // Chiamata alla funzione per impostare lo sfondo casuale
+        setRandomBackground();
+
+        // Lista dei sottomarini registrati
+        const submarines = ["Nautilus", "Typhoon", "Red October", "Seawolf", "Los Angeles", "Virginia", "Astute", "Oscar", "Delta", "Akula"];
+
+        // Funzione per selezionare un sottomarino casuale ogni giorno
+        function getRandomSubmarine() {
+            const currentDay = new Date().getDate();
+            return submarines[currentDay % submarines.length];
+        }
+
+        // Sottomarino del giorno (viene generato al caricamento della pagina)
+        const dailySubmarine = getRandomSubmarine();
+
+        // Popola il menu a tendina con i sottomarini disponibili
+        const submarineList = document.getElementById("submarineList");
+        submarines.forEach(submarine => {
+            let option = document.createElement("option");
+            option.value = submarine;
+            option.textContent = submarine;
+            submarineList.appendChild(option);
+        });
+
+        // Funzione per verificare l'input dell'utente
+        function checkSubmarine() {
+            const userGuess = document.getElementById("submarineInput").value.trim();
+            const resultMessage = document.getElementById("resultMessage");
+
+            if (userGuess.toLowerCase() === dailySubmarine.toLowerCase()) {
+                resultMessage.textContent = "Corretto! Hai indovinato il sottomarino di oggi!";
+                resultMessage.style.color = "lime";
+            } else {
+                resultMessage.textContent = "Sbagliato! Riprova.";
+                resultMessage.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
